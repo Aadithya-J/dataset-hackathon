@@ -423,33 +423,52 @@ const ChatArea: React.FC<ChatAreaProps> = ({ isVoiceMode, setIsVoiceMode, isDark
 
       {/* Input Area */}
       <div className="p-4 md:p-6 bg-gradient-to-t from-background via-background to-transparent dark:from-[#0F1115] dark:via-[#0F1115] dark:to-transparent z-10 transition-colors duration-300">
-        <div className="max-w-4xl mx-auto flex items-center gap-3 bg-white dark:bg-[#1E293B] p-3 rounded-3xl border border-gray-200 dark:border-white/10 shadow-xl ring-1 ring-black/5 dark:ring-white/5">
+        <div className="max-w-4xl mx-auto flex items-end gap-2 bg-white/80 dark:bg-[#1E293B]/80 backdrop-blur-xl p-2 pl-5 rounded-[2rem] border border-gray-200/50 dark:border-white/10 shadow-2xl shadow-indigo-500/5 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-300 focus-within:ring-2 focus-within:ring-accent-blue/50 dark:focus-within:ring-accent-teal/50">
           <Button 
             variant="ghost" 
-            className={`rounded-full w-10 h-10 md:w-12 md:h-12 !p-0 hover:bg-gray-100 dark:hover:bg-white/5 ${isVoiceMode ? 'text-accent-blue dark:text-accent-teal' : 'text-text-muted dark:text-slate-500'}`}
+            className={`rounded-full w-10 h-10 md:w-12 md:h-12 !p-0 mb-0.5 hover:bg-gray-100 dark:hover:bg-white/5 ${isVoiceMode ? 'text-accent-blue dark:text-accent-teal bg-accent-blue/10 dark:bg-accent-teal/10' : 'text-text-muted dark:text-slate-500'}`}
             onClick={toggleVoiceMode}
             title="Voice Mode"
           >
             <Mic className={`w-5 h-5 ${voiceStatus === 'listening' ? 'animate-pulse text-accent-blue dark:text-accent-teal' : ''}`} />
           </Button>
           
-          <input
-            ref={inputRef}
-            type="text"
+          <textarea
+            ref={inputRef as any}
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onChange={(e) => {
+              setInputText(e.target.value);
+              e.target.style.height = 'auto';
+              e.target.style.height = Math.min(e.target.scrollHeight, 120) + 'px';
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+                // Reset height
+                if (e.currentTarget) {
+                    e.currentTarget.style.height = 'auto';
+                }
+              }
+            }}
             placeholder="Type your message..."
-            className="flex-1 bg-transparent border-none focus:ring-0 text-text-primary dark:text-[#E2E8F0] placeholder-text-muted dark:placeholder-slate-500 px-2 text-base"
+            rows={1}
+            className="flex-1 bg-transparent border-none focus:ring-0 outline-none focus:outline-none text-text-primary dark:text-[#E2E8F0] placeholder-text-muted dark:placeholder-slate-500 px-2 py-3.5 text-base resize-none max-h-32 min-h-[3rem]"
           />
 
           <Button 
-            onClick={() => handleSend()} 
+            onClick={() => {
+                handleSend();
+                // Reset height manually if needed via ref, but state update usually handles it if we reset height on send
+                if (inputRef.current) {
+                    inputRef.current.style.height = 'auto';
+                }
+            }} 
             disabled={!inputText.trim()}
             variant={inputText.trim() ? "primary" : "ghost"}
-            className={`rounded-full w-10 h-10 md:w-12 md:h-12 !p-0 transition-all duration-200 ${inputText.trim() ? 'bg-accent-blue dark:bg-accent-teal text-white shadow-lg hover:shadow-xl hover:scale-105' : 'text-text-muted dark:text-slate-500'}`}
+            className={`rounded-full w-10 h-10 md:w-12 md:h-12 !p-0 mb-0.5 transition-all duration-300 ${inputText.trim() ? 'bg-accent-blue dark:bg-accent-teal text-white shadow-lg hover:shadow-xl hover:scale-105 hover:rotate-12' : 'text-text-muted dark:text-slate-500'}`}
           >
-            <Send className="w-5 h-5" />
+            <Send className={`w-5 h-5 ${inputText.trim() ? 'ml-0.5' : ''}`} />
           </Button>
         </div>
         <div className="text-center mt-3">
