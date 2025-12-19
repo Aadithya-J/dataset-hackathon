@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pandora Companion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: {
+                DEFAULT: '#FDF8EB', // Cream (Light Mode)
+                dark: '#0F1115',    // Dark Slate (Dark Mode)
+              },
+              sidebar: {
+                DEFAULT: '#F4F1EA', // Warm Neutral (Light Mode)
+                dark: '#121826',    // Dark Sidebar
+              },
+              card: {
+                DEFAULT: '#FFFFFF', // White (Light Mode)
+                dark: '#1E293B',    // Dark Card
+              },
+              text: {
+                primary: '#2C3E50', // Slate (Light Mode)
+                primaryDark: '#E2E8F0', // Light Gray (Dark Mode)
+                muted: '#64748B',   // Muted Slate (Light Mode)
+                mutedDark: '#94A3B8', // Muted Gray (Dark Mode)
+              },
+              accent: {
+                blue: '#5D8AA8',    // Slate Blue (Light Mode Accent)
+                tan: '#C8A67B',     // Tan (Light Mode Secondary)
+                teal: '#5EEAD4',    // Teal (Dark Mode Accent)
+                violet: '#A78BFA',  // Violet (Dark Mode Secondary)
+              }
+            },
+            fontFamily: {
+              sans: ['Quicksand', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Quicksand', sans-serif;
+        /* Background color handled by Tailwind classes in App.tsx */
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #94A3B8; 
+        border-radius: 3px;
+      }
+      .dark ::-webkit-scrollbar-track {
+        background: #121826; 
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #334155; 
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748B; 
+      }
+      
+      /* Animations */
+      @keyframes breathe {
+        0%, 100% { box-shadow: 0 0 10px rgba(94, 234, 212, 0.2); transform: scale(1); }
+        50% { box-shadow: 0 0 25px rgba(167, 139, 250, 0.4); transform: scale(1.05); }
+      }
+      .animate-breathe {
+        animation: breathe 4s ease-in-out infinite;
+      }
+
+      @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+        animation: fade-in-up 0.5s ease-out forwards;
+      }
+      
+      @keyframes wave {
+        0%, 100% { height: 10%; }
+        50% { height: 100%; }
+      }
+      .animate-wave {
+        animation: wave 1s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

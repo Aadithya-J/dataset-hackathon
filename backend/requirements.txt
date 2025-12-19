@@ -1,0 +1,14 @@
+langgraph
+langchain
+langchain-groq
+sentence-transformers
+numpy<2.0.0
+python-dotenv
+fastapi
+uvicorn
+supabase
+websockets
+pydantic-settings
+httpx
+google-genai
+

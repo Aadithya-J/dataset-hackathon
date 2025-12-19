@@ -1,0 +1,6 @@
+langgraph
+langchain
+langchain-groq
+sentence-transformers
+numpy
+python-dotenv

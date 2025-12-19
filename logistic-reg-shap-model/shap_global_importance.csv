@@ -1,0 +1,32 @@
+feature,mean_abs_shap
+remainder__Employment Status,0.07640118830283224
+encoder__Physical Activity Level_Sedentary,0.03834236228060549
+encoder__Smoking Status_Current,0.03423365554600306
+encoder__Physical Activity Level_Moderate,0.013365912248581142
+remainder__Number of Children,0.013262447228847092
+encoder__Dietary Habits_Healthy,0.006578541983860979
+encoder__Alcohol Consumption_Low,0.0035751720085919784
+encoder__Smoking Status_Non-smoker,0.0016695669067214843
+encoder__Alcohol Consumption_High,0.00013482463819661168
+encoder__Education Level_Associate Degree,0.0
+encoder__Education Level_Bachelor's Degree,0.0
+encoder__Education Level_High School,0.0
+encoder__Marital Status_Divorced,0.0
+encoder__Marital Status_Married,0.0
+encoder__Marital Status_Single,0.0
+encoder__Physical Activity Level_Active,0.0
+encoder__Education Level_Master's Degree,0.0
+encoder__Education Level_PhD,0.0
+encoder__Smoking Status_Former,0.0
+encoder__Marital Status_Widowed,0.0
+encoder__Dietary Habits_Unhealthy,0.0
+encoder__Dietary Habits_Moderate,0.0
+encoder__Alcohol Consumption_Moderate,0.0
+encoder__Sleep Patterns_Good,0.0
+encoder__Sleep Patterns_Fair,0.0
+remainder__Age,0.0
+encoder__Sleep Patterns_Poor,0.0
+remainder__Income,0.0
+remainder__History of Mental Illness,0.0
+remainder__History of Substance Abuse,0.0
+remainder__Family History of Depression,0.0

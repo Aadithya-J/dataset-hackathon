@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Support</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .chat-container { height: calc(100vh - 100px); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function App() {
+            const [messages, setMessages] = useState([
+                { sender: 'bot', text: 'Hello. I am here to listen and support you. How are you feeling today?' }
+            ]);
+            const [input, setInput] = useState('');
+            const [ws, setWs] = useState(null);
+            const messagesEndRef = useRef(null);
+            const clientId = useRef(Math.random().toString(36).substring(7));
+
+            useEffect(() => {
+                const socket = new WebSocket(`ws://${window.location.host}/ws/chat/${clientId.current}`);
+                
+                socket.onopen = () => {
+                    console.log('Connected to WebSocket');
+                };
+
+                socket.onmessage = (event) => {
+                    setMessages(prev => [...prev, { sender: 'bot', text: event.data }]);
+                };
+
+                socket.onclose = () => {
+                    console.log('Disconnected');
+                };
+
+                setWs(socket);
+
+                return () => {
+                    socket.close();
+                };
+            }, []);
+
+            useEffect(() => {
+                messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            }, [messages]);
+
+            const sendMessage = (e) => {
+                e.preventDefault();
+                if (!input.trim()) return;
+
+                setMessages(prev => [...prev, { sender: 'user', text: input }]);
+                if (ws) {
+                    ws.send(input);
+                }
+                setInput('');
+            };
+
+            return (
+                <div className="max-w-2xl mx-auto p-4 h-screen flex flex-col">
+                    <header className="bg-white p-4 rounded-t-lg shadow-sm border-b border-gray-200">
+                        <h1 className="text-xl font-semibold text-gray-800">Mental Health Support</h1>
+                        <p className="text-sm text-gray-500">A safe space to share your thoughts</p>
+                    </header>
+                    
+                    <div className="flex-1 bg-white p-4 overflow-y-auto chat-container shadow-sm">
+                        {messages.map((msg, idx) => (
+                            <div key={idx} className={`mb-4 flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-[80%] p-3 rounded-lg ${
+                                    msg.sender === 'user' 
+                                        ? 'bg-blue-600 text-white rounded-br-none' 
+                                        : 'bg-gray-100 text-gray-800 rounded-bl-none'
+                                }`}>
+                                    {msg.text}
+                                </div>
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    <form onSubmit={sendMessage} className="bg-white p-4 rounded-b-lg shadow-sm border-t border-gray-200 flex gap-2">
+                        <input
+                            type="text"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Type your message..."
+                            className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <button 
+                            type="submit"
+                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                        >
+                            Send
+                        </button>
+                    </form>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "Aura - Mental Health Companion",
+  "description": "A calm, dark-themed mental health companion chatbot with voice interaction and mood insights.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

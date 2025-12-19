@@ -1,0 +1,32 @@
+feature,coefficient,odds_ratio,abs_coeff
+remainder__Employment Status,0.08068460423542682,1.084028944506707,0.08068460423542682
+encoder__Smoking Status_Current,0.07008921150834586,1.072603865594788,0.07008921150834586
+encoder__Physical Activity Level_Sedentary,-0.03862762522350587,0.9621089075396124,0.03862762522350587
+remainder__Number of Children,-0.014990652009580564,0.9851211484630783,0.014990652009580564
+encoder__Physical Activity Level_Moderate,0.013960507437396246,1.0140584103824317,0.013960507437396246
+encoder__Dietary Habits_Healthy,0.010241973323686667,1.0102946018523418,0.010241973323686667
+encoder__Alcohol Consumption_Low,-0.0035893426856534404,0.9964170913045702,0.0035893426856534404
+encoder__Smoking Status_Non-smoker,-0.0017128187251697696,0.9982886473116851,0.0017128187251697696
+encoder__Alcohol Consumption_High,0.0001602663676375458,1.000160279210978,0.0001602663676375458
+encoder__Education Level_Associate Degree,0.0,1.0,0.0
+encoder__Education Level_Bachelor's Degree,0.0,1.0,0.0
+encoder__Education Level_High School,0.0,1.0,0.0
+encoder__Marital Status_Divorced,0.0,1.0,0.0
+encoder__Marital Status_Married,0.0,1.0,0.0
+encoder__Marital Status_Single,0.0,1.0,0.0
+encoder__Physical Activity Level_Active,0.0,1.0,0.0
+encoder__Education Level_Master's Degree,0.0,1.0,0.0
+encoder__Education Level_PhD,0.0,1.0,0.0
+encoder__Smoking Status_Former,0.0,1.0,0.0
+encoder__Marital Status_Widowed,0.0,1.0,0.0
+encoder__Dietary Habits_Unhealthy,0.0,1.0,0.0
+encoder__Dietary Habits_Moderate,0.0,1.0,0.0
+encoder__Alcohol Consumption_Moderate,0.0,1.0,0.0
+encoder__Sleep Patterns_Good,0.0,1.0,0.0
+encoder__Sleep Patterns_Fair,0.0,1.0,0.0
+remainder__Age,0.0,1.0,0.0
+encoder__Sleep Patterns_Poor,0.0,1.0,0.0
+remainder__Income,0.0,1.0,0.0
+remainder__History of Mental Illness,0.0,1.0,0.0
+remainder__History of Substance Abuse,0.0,1.0,0.0
+remainder__Family History of Depression,0.0,1.0,0.0
