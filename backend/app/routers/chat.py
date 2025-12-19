@@ -1,10 +1,49 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 import json
+import asyncio
 from ..graph.workflow import app_workflow
 from ..services.history_service import fetch_chat_history, save_chat_message, fetch_user_sessions
+from ..services.memory_service import memory_service
+from ..core.llm import llm
 
 router = APIRouter()
+
+@router.post("/chat/starter/{user_id}")
+async def get_starter_message(user_id: str):
+    # 1. Try to get a random memory
+    memory = await memory_service.get_random_memory(user_id)
+    
+    if not memory:
+        return {"message": "Hi there! How are you feeling today?"}
+        
+    # 2. Generate a personalized starter
+    prompt = f"""
+    The user has this memory: "{memory}".
+    Generate a short, warm, and empathetic opening message for a new chat session that gently references this memory.
+    Example: If memory is "scared of exams", say "Hey, I was thinking about you. How is the exam prep going?"
+    Keep it under 20 words.
+    """
+    try:
+        response = await llm.ainvoke([
+            SystemMessage(content="You are a supportive friend."),
+            HumanMessage(content=prompt),
+        ])
+
+        message = response.content
+
+        # Remove surrounding single or double quotes if present
+        if (message.startswith('"') and message.endswith('"')) or (
+            message.startswith("'") and message.endswith("'")
+        ):
+            message = message[1:-1]
+
+        return {"message": message}
+
+    except Exception as e:
+        print(f"Error generating starter: {e}")
+        return {"message": "Hi there! How are you feeling today?"}
+
 
 @router.get("/chat/sessions/{user_id}")
 async def get_sessions(user_id: str):
@@ -68,6 +107,10 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str, session_id: s
             
             # 3. Save Bot Response
             await save_chat_message(client_id, session_id, "bot", bot_response)
+            
+            # 4. Save Interaction to Mem0 (Async/Background)
+            # We use asyncio.create_task to not block the websocket response
+            asyncio.create_task(memory_service.save_interaction(client_id, data, bot_response))
             
             # Send as JSON
             await websocket.send_text(json.dumps({

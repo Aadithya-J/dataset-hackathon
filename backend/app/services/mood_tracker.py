@@ -1,16 +1,17 @@
 from ..core.database import get_supabase
 from datetime import datetime
 
-async def log_mood(user_id: str, emotion: str, text: str):
+async def log_mood(user_id: str, emotion: str, text: str, intensity: float = None):
     supabase = get_supabase()
     if not supabase:
-        print(f"[MOCK DB] Logging mood for {user_id}: {emotion}")
+        print(f"[MOCK DB] Logging mood for {user_id}: {emotion} (Intensity: {intensity})")
         return
 
     data = {
         "user_id": user_id,
         "emotion": emotion,
         "note": text,
+        "intensity": intensity
         # "created_at" is handled by default in DB, but we can send it if we want.
         # Let's let the DB handle it to match the schema default.
     }

@@ -13,3 +13,4 @@ class AgentState(TypedDict):
     wellness_recommendation: str
     last_recommendation: str
     user_id: str
+    mem0_context: str

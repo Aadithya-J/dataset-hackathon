@@ -7,6 +7,7 @@ from ..services.emotion_service import detect_emotion
 from ..services.mood_tracker import log_mood, get_recent_moods
 from ..services.ml_service import get_user_risk_profile
 from ..services.user_service import get_latest_assessment
+from ..services.memory_service import memory_service
 from ..core.llm import llm
 from .state import AgentState
 
@@ -71,7 +72,27 @@ async def perception_node(state: AgentState) -> Dict[str, Any]:
 
     # 4. Log Mood (keep original signature)
     # We continue logging the raw detection (label + confidence if available) for audit.
-    await log_mood(user_id, emotion_label, last_message)
+    
+    # Fetch Risk for Logging
+    risk_profile = get_user_risk_profile(user_id)
+    if not risk_profile:
+        db_record = await get_latest_assessment(user_id)
+        if db_record:
+            risk_profile = {
+                "prediction": db_record.get("risk_prediction"),
+                "confidence": db_record.get("risk_confidence")
+            }
+            
+    risk_score = 0.0
+    if risk_profile:
+        # We store the confidence of the prediction as "intensity" (risk score)
+        # Ideally this should be the probability of the positive class (Risk)
+        risk_score = float(risk_profile.get("confidence", 0.0))
+
+    await log_mood(user_id, emotion_label, last_message, intensity=risk_score)
+
+    # 5. Retrieve Therapeutic Context (Mem0)
+    mem0_context = await memory_service.get_therapeutic_context(user_id, last_message)
 
     return {
         "current_intent": tag,
@@ -79,6 +100,7 @@ async def perception_node(state: AgentState) -> Dict[str, Any]:
         "emotion_confidence": emotion_conf,
         "emotion_source": inferred_source,
         "retrieved_response": verified_response,
+        "mem0_context": mem0_context
     }
 
 
@@ -162,6 +184,7 @@ async def generation_node(state: AgentState) -> Dict[str, Any]:
     risk_score = state.get("risk_score", 0)
     emotion_conf = state.get("emotion_confidence", 1.0)
     emotion_source = state.get("emotion_source", "classifier")
+    mem0_context = state.get("mem0_context", "")
 
     # CRISIS MODE: validation-first, structured probing
     if intent in ("crisis", "suicidal") or risk_score >= 7:
@@ -269,7 +292,8 @@ async def generation_node(state: AgentState) -> Dict[str, Any]:
         f"- User's current intent: {intent}\n"
         f"- User's detected emotion: {emotion} (Confidence: {emotion_conf})\n"
         f"- Suggested coping strategy: {recommendation}\n"
-        f"- Expert anchor text: {anchor}"
+        f"- Expert anchor text: {anchor}\n"
+        f"{mem0_context}"
         f"{risk_context}\n\n"
         "Guidelines:\n"
         "1. **Natural Conversation**: Speak naturally and casually. Avoid formal greetings like 'It is nice to connect with you'.\n"

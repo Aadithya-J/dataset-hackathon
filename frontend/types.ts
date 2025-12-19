@@ -29,4 +29,13 @@ export interface Session {
 export enum ViewState {
   CHAT = 'CHAT',
   INSIGHTS = 'INSIGHTS',
+  RITUALS = 'RITUALS',
+}
+
+export interface Activity {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  durationSeconds: number;
 }

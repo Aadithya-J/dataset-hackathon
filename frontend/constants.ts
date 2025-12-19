@@ -1,4 +1,4 @@
-import { MoodData, StressData, SleepData, Session } from './types';
+import { MoodData, StressData, SleepData, Session, Activity } from './types';
 
 export const COMPANION_NAME = "PANDORA";
 
@@ -75,3 +75,27 @@ export const LIGHT_COLORS = {
   primaryChart: '#5D8AA8', // Slate Blue
   secondaryChart: '#C8A67B', // Tan
 };
+
+export const AFFIRMATIONS = [
+  "You are enough just as you are.",
+  "Your feelings are valid.",
+  "This too shall pass.",
+  "You are stronger than you know.",
+  "Peace begins with a smile.",
+  "You deserve happiness.",
+  "Take it one day at a time.",
+  "Breathe in calm, breathe out stress.",
+];
+
+export const ACTIVITIES: Activity[] = [
+  { id: 'breathing', type: 'breathing', title: 'Box Breathing', description: 'Regulate your nervous system with controlled breathing.', durationSeconds: 300 },
+  { id: 'grounding', type: 'grounding', title: '5-4-3-2-1 Grounding', description: 'Connect with your senses to anchor yourself in the present.', durationSeconds: 0 },
+  { id: 'journaling', type: 'journaling', title: 'Free Writing', description: 'Unload your mind without judgment.', durationSeconds: 600 },
+  { id: 'doodle', type: 'doodle', title: 'Zen Doodling', description: 'Express yourself creatively to release tension.', durationSeconds: 300 },
+  { id: 'cloud', type: 'cloud', title: 'Cloud Gazing', description: 'Let your thoughts drift away like clouds.', durationSeconds: 300 },
+  { id: 'pmr', type: 'pmr', title: 'Muscle Relaxation', description: 'Systematically release physical tension.', durationSeconds: 450 },
+  { id: 'bodyscan', type: 'bodyscan', title: 'Body Scan', description: 'Reconnect with your physical self.', durationSeconds: 600 },
+  { id: 'trataka', type: 'trataka', title: 'Candle Gazing', description: 'Improve focus and calm the mind.', durationSeconds: 300 },
+  { id: 'reflection', type: 'reflection', title: 'Self Reflection', description: 'Explore your inner thoughts in silence.', durationSeconds: 300 },
+  { id: 'yoga', type: 'yoga', title: 'Sun Salutation', description: 'Energize your body with a gentle flow.', durationSeconds: 600 },
+];

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LayoutDashboard, MessageSquare, History, User, ShieldAlert, LogOut, Sun, Moon, Activity } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, History, User, ShieldAlert, LogOut, Sun, Moon, Activity, Sparkles } from 'lucide-react';
 import { ViewState, Session } from '../types';
 import { COMPANION_NAME } from '../constants';
 import { Button } from './Button';
@@ -102,6 +102,18 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, isOpen, setIsOp
           </button>
 
           <button
+            onClick={() => { setView(ViewState.RITUALS); setIsOpen(false); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+              currentView === ViewState.RITUALS
+                ? 'bg-white dark:bg-[#1E293B] text-accent-tan dark:text-accent-violet shadow-md ring-1 ring-gray-100 dark:ring-0' 
+                : 'text-text-muted dark:text-text-mutedDark hover:bg-black/5 dark:hover:bg-white/5 hover:text-text-primary dark:hover:text-[#E2E8F0]'
+            }`}
+          >
+            <Sparkles className="w-5 h-5" />
+            <span className="font-medium">Ritual Lab</span>
+          </button>
+
+          <button
             onClick={() => {
                 onOpenWellness();
                 setIsOpen(false);
@@ -135,9 +147,11 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, isOpen, setIsOp
                     }}
                     className="group px-4 py-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors"
                 >
-                    <div className="text-sm text-text-primary dark:text-[#E2E8F0] font-medium mb-0.5">{session.date}</div>
-                    <div className="text-xs text-text-muted dark:text-[#94A3B8] truncate group-hover:text-accent-tan dark:group-hover:text-accent-violet transition-colors">
+                    <div className="text-sm text-text-primary dark:text-[#E2E8F0] font-medium mb-0.5 truncate group-hover:text-accent-tan dark:group-hover:text-accent-violet transition-colors">
                         {session.preview}
+                    </div>
+                    <div className="text-xs text-text-muted dark:text-[#94A3B8]">
+                        {session.date}
                     </div>
                 </div>
                 ))

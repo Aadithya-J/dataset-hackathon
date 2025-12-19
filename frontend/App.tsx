@@ -3,6 +3,7 @@ import { Menu, User } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import ChatArea from './components/ChatArea';
 import Dashboard from './components/Dashboard';
+import ActivitiesView from './components/ActivitiesView';
 import { AuthModal } from './components/AuthModal';
 import { WellnessModal } from './components/WellnessModal';
 import { ViewState } from './types';
@@ -101,8 +102,10 @@ const App: React.FC = () => {
             isDarkMode={isDarkMode}
             sessionId={sessionId || 'default'}
           />
+        ) : currentView === ViewState.RITUALS ? (
+          <ActivitiesView />
         ) : (
-          <Dashboard isDarkMode={isDarkMode} />
+          <Dashboard isDarkMode={isDarkMode} user={user} />
         )}
       </div>
 

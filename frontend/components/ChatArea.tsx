@@ -44,13 +44,36 @@ const ChatArea: React.FC<ChatAreaProps> = ({ isVoiceMode, setIsVoiceMode, isDark
   // Initialize text WebSocket for regular chat
   useEffect(() => {
     const userId = localStorage.getItem('user_id') || `guest-${Math.random().toString(36).substr(2, 9)}`;
+    if (!localStorage.getItem('user_id')) {
+        localStorage.setItem('user_id', userId);
+    }
     
+    // Reset to default initially
     setMessages([{
       id: 'init-1',
       role: 'model',
       text: "I'm here with you. Take your time.",
       timestamp: new Date()
     }]);
+
+    // Fetch personalized starter
+    fetch(`http://localhost:8000/chat/starter/${userId}`, { method: 'POST' })
+      .then(res => res.json())
+      .then(data => {
+         setMessages(prev => {
+            // Only update if we are still showing the default init message
+            if (prev.length === 1 && prev[0].id === 'init-1') {
+                return [{
+                    id: 'init-1',
+                    role: 'model',
+                    text: data.message,
+                    timestamp: new Date()
+                }];
+            }
+            return prev;
+         });
+      })
+      .catch(err => console.error("Failed to fetch starter", err));
 
     webSocketService.connect(userId, sessionId, (eventData) => {
       try {

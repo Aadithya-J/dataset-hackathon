@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     SUPABASE_KEY: str = ""
     EMOTIONS_API_URL: str = "https://aadithya1-goemotions.hf.space/predict"
     GEMINI_API_KEY: str = ""
+    MEM0_API_KEY: str = ""
 
     class Config:
         env_file = ".env"

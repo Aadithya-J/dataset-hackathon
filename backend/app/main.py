@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import chat, auth, assessment, voice
+from .routers import chat, auth, assessment, voice, analytics
 from .core.database import init_supabase
 import os
 
@@ -25,6 +25,7 @@ app.include_router(chat.router)
 app.include_router(auth.router)
 app.include_router(assessment.router)
 app.include_router(voice.router)
+app.include_router(analytics.router, prefix="/analytics", tags=["Analytics"])
 
 # Serve Frontend (Optional: for simple deployment)
 # We'll serve the templates directory as static for simplicity in this MVP

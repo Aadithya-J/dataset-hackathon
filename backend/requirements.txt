@@ -12,3 +12,4 @@ pydantic-settings
 httpx
 google-genai
 
+mem0ai
